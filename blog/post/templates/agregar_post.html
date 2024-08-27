@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Agregar Post</title>
+</head>
+<body>
+  <h1>Agregar Nuevo Post</h1>
+  <form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    {% if form.errors %}
+      <ul>
+        {% for field in form %}
+          {% if field.errors %}
+          {% endif %}
+        {% endfor %}
+      </ul>
+    {% endif %}
+      <br>
+    <button type ="submit">Guardar Post</button>
+  </form>
+  <br>
+  <a href="{% url 'inicio' %}">incio</a>
+</body>
+</html>
