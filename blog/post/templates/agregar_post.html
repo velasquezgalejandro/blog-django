@@ -8,18 +8,31 @@
   <form method="post">
     {% csrf_token %}
     {{ form.as_p }}
+
     {% if form.errors %}
+      <h2>Errores:</h2>
       <ul>
         {% for field in form %}
-          {% if field.errors %}
-          {% endif %}
+          {% for error in field.errors %}
+            <li>{{ field.label }}: {{ error }}</li>
+          {% endfor %}
         {% endfor %}
+        {% if form.non_field_errors %}
+          {% for error in form.non_field_errors %}
+            <li>{{ error }}</li>
+          {% endfor %}
+        {% endif %}
       </ul>
     {% endif %}
-      <br>
-    <button type ="submit">Guardar Post</button>
+
+    <br>
+    <button type="submit">Guardar Post</button>
   </form>
   <br>
-  <a href="{% url 'inicio' %}">incio</a>
+   <a href="{% url 'inicio' %}">
+  <button type="submit">
+    ← Volver al inicio
+  </button>
+  </a>
 </body>
 </html>
