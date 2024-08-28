@@ -15,6 +15,8 @@ class PostModelForm(forms.ModelForm):
         titulo = self.cleaned_data.get('titulo')
         if not titulo:
             raise forms.ValidationError('El título es obligatorio.')
+        if len(titulo) < 4:
+            raise forms.ValidationError('El título debe tener al menos 4 caracteres.')
         return titulo
 
     def clean_contenido(self):
