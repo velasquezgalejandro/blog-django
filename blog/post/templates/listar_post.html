@@ -6,14 +6,17 @@
 <body>
     <h1>lista de Posts</h>
         <form method="get">
-            Fecha minima: <input type="number" name="fecha_min">
-            Fecha maxima: <input type="number" name="fecha_max">
+            Fecha minima: <input name="fecha_min">
+            Fecha maxima: <input name="fecha_max">
             <button type="submit">Filtrar por Fecha</button>
         </form>
          <form method="get">
             Buscar: <input type="text" name="q">
             <button type="submit">Filtrar por nombre, descripcion o categoria</button>
         </form>
+        <a href="{% url 'listar_post' %}" class="button">
+          <button type="submit">Limpiar Filtros</button>
+        </a>
     <ul>
         {% for post in posts %}
         <li>{{ post.titulo }} - {{ post.fecha_publicacion }} - {{ post.categoria }} - {{ post.autor }}</li>
