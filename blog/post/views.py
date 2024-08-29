@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect
 from django.db.models import Q
 from django.core.paginator import Paginator
+from datetime import datetime
 
 from .models import  Post
 from .forms import  PostModelForm
@@ -17,16 +18,43 @@ def inicio(request):
 def listar_post(request):
     posts_list = Post.objects.all()
     query = request.GET.get('q')
-    paginator = Paginator(posts_list, 10)
+    fecha_min_str = request.GET.get('fecha_min')
+    fecha_max_str = request.GET.get('fecha_max')
 
+    try:
+        if fecha_min_str:
+            fecha_min = datetime.strptime(fecha_min_str, '%d/%m/%Y').date()
+        else:
+            fecha_min = None
+
+        if fecha_max_str:
+            fecha_max = datetime.strptime(fecha_max_str, '%d/%m/%Y').date()
+        else:
+            fecha_max = None
+    except ValueError:
+        fecha_min = None
+        fecha_max = None
+
+    if fecha_min and fecha_max:
+        if fecha_min <= fecha_max:
+            posts_list = posts_list.filter(
+                fecha_publicacion__gte=fecha_min,
+                fecha_publicacion__lte=fecha_max
+            )
+        else:
+            posts_list = posts_list.none()
+    elif fecha_min:
+        posts_list = posts_list.filter(fecha_publicacion__gte=fecha_min)
+    elif fecha_max:
+        posts_list = posts_list.filter(fecha_publicacion__lte=fecha_max)
+
+    if query:
+        posts_list = posts_list.filter(Q(titulo__icontains = query) | Q(contenido__icontains = query) | Q(categoria__icontains = query))
+
+    paginator = Paginator(posts_list, 10)
     page_number = request.GET.get('page')
     posts = paginator.get_page(page_number)
 
-    # if precio_min and precio_max:
-    #     posts_list = posts_list.filter(precio__gte = precio_min, precio__lte= precio_max)
-
-    if query:
-        posts_list = posts_list.filter(Q(titulo__icontains = query)| Q(contenido__icontains = query) | Q(categoria__icontains = query))
     return render(request, 'listar_post.html', {'posts': posts})
 
 def agregar_post(request):
