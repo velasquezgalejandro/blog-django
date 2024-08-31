@@ -34,7 +34,7 @@ Pasos para instalar el proyecto localmente:
     cd blog
     ```
 
-3. **Ejecuta las migraciones de la base de datos y iniciar el servidor local:**
+3. **Ejecuta las migraciones de la base de datos e inicia el servidor en local:**
     ```bash
     python manage.py makemigration
     python manage.py migrate
