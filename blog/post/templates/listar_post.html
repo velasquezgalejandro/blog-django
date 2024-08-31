@@ -6,7 +6,7 @@
 <body>
     <h1>lista de Posts</h>
         <form method="get">
-            Fecha minima: <input name="fecha_min">
+            Fecha minima: <input name="fecha_min" >
             Fecha maxima: <input name="fecha_max">
             <button type="submit">Filtrar por Fecha</button>
         </form>
@@ -14,12 +14,13 @@
             Buscar: <input type="text" name="q">
             <button type="submit">Filtrar por nombre, descripcion o categoria</button>
         </form>
-        <a href="{% url 'listar_post' %}" class="button">
+        <a href="{% url 'listar_post'  %}" class="button">
           <button type="submit">Limpiar Filtros</button>
         </a>
     <ul>
         {% for post in posts %}
-        <li>{{ post.titulo }} - {{ post.fecha_publicacion }} - {{ post.categoria }} - {{ post.autor }}</li>
+        <li> <a href="{% url 'detalle_post' post.pk%}">{{ post.titulo }} </a> - {{ post.fecha_publicacion }} - {{ post.categoria }} - {{ post.autor }} - <a href="{% url 'detalle_post' post.pk%}"> <Button>Vista de detalle</Button> </a>
+        </li>
         {% endfor %}
     </ul>
     <br>
@@ -32,7 +33,6 @@
             <a href="?page={{ posts.next_page_number }}">Siguente</a>
         {% endif %}
     </div>
-    <br>
     <br>
    <a href="{% url 'inicio' %}">
   <button type="submit">
