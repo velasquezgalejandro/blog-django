@@ -66,3 +66,18 @@ def agregar_post(request):
     else:
         form = PostModelForm
     return render(request, 'agregar_post.html', {'form': form})
+
+def editar_post(request, pk):
+    post= Post.objects.get(pk=pk)
+    if request.method == 'POST':
+        form = PostModelForm(request.POST, instance=post)
+        if form.is_valid():
+            form.save()
+            return redirect('listar_post')
+    else:
+        form = PostModelForm(instance=post)
+    return render(request, 'editar_post.html', {'form': form})
+
+def detalle_post(request, pk):
+    post = Post.objects.get(pk=pk)
+    return render(request, 'detalle_post.html', {'post': post})
